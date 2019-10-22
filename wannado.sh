@@ -4,13 +4,13 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m'
 
-if (! [[ -f ~/.todo ]]) && [ $1 == "add" ]
+if (! [[ -f ~/.todo ]]) && [[ $1 == "add" ]]
 then
 	echo 0:u:$2 > ~/.todo
 	echo TaskId: 0
 elif (! [[ -f ~/.todo ]])
 then
-	echo No notes avaliable
+	echo -e "$RED"No notes avaliable $NC
 else
 	case $1 in
 		add)
@@ -21,7 +21,7 @@ else
 		complete)
 			sed -ri 's|(^'"$2"':)u|\1c|g' ~/.todo
 			;;
-		~/.todo)
+		todo)
 			sed -r "/^.*:c/d" ~/.todo | awk -F: '{print $3}'
 			;;
 		done)
@@ -31,11 +31,11 @@ else
 			sed -ri "/^$2:/d" ~/.todo
 			;;
 		all)
-			echo -e $GREEN '\b'Done: $NC
+			echo -e "$GREEN"Done: $NC
 			sed -r "/^.*:u/d" ~/.todo | awk -F: '{print "\t"$1": "$3}'
-			echo -e $RED '\b'ToDo: $NC
+			echo -e "$RED"ToDo: $NC
 			sed -r "/^.*:c/d" ~/.todo | awk -F: '{print "\t"$1": "$3}'
 			;;
 
 		esac
-	fi
+fi
